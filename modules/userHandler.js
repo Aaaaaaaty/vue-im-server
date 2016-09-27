@@ -63,7 +63,7 @@ var userHandler = {
           },
           msg: '服务器出错'
         }) 
-      } else if(u.username === user.username) {
+      } else if(user.username === u.username) {
         return callback({
           status: 'ERROR',
           meta: 'user',
@@ -75,7 +75,7 @@ var userHandler = {
       }
 
       var userModel = new User(user)
-      userModel.save(function(err, user) {
+      userModel.save(function(err, u) {
         if(err) {
           return callback({
             status: 'ERROR',
@@ -100,8 +100,53 @@ var userHandler = {
     })
   },
   updateUser: function() {},
-  deleteUser: function() {},
-  getUserList: function() {}
+  deleteUser: function(user, callback) {
+    User.delete(user, function(err, u) {
+      if(err) {
+        console.log(err)
+        return callback({
+          status: 'ERROR',
+            meta: 'user',
+            data: {
+              user: u
+            },
+            msg: '服务器出错'
+        })
+      } else {
+        return callback({
+          status: 'OK',
+            meta: 'user',
+            data: {
+              user_id: u
+            },
+            msg: '删除成功'
+        })
+      }
+    }) 
+  },
+  getUserList: function(callback) {
+    User.getUserList(function(err, u) {
+      if(err) {
+        return callback({
+          status: 'ERROR',
+            meta: 'user',
+            data: {
+              user: null
+            },
+            msg: '服务器出错'
+        })
+      } else {
+        return callback({
+          status: 'OK',
+          meta: 'user',
+          data: {
+            user: u
+          },
+          msg: '得到用户列表'
+        })
+      }
+    })
+  }
 }
 
-module.exports userHandler
+module.exports = userHandler

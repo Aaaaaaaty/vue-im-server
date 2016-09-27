@@ -1,7 +1,7 @@
 var mongoose = require('./db.js')
 var UserSchema = mongoose.Schema({
     username: String,
-    password: Number
+    password: String
 })
 
 var UserModule = mongoose.model('User', UserSchema)
@@ -11,17 +11,17 @@ function User(user) {
     this.password = user.password
 }
 
-User.save = function(callback) {
+User.prototype.save = function(callback) {
   var user = {
     username: this.username,
     password: this.password
   }
-  var newUser = new userModel(user)
+  var newUser = new UserModule(user)
   newUser.save(function (err, user) {
     if (err) {
       return callback(err)
     }
-    callback(null, user)
+    return callback(null, user)
   })
 }
 
@@ -41,9 +41,18 @@ User.delete = function(user, callback) {
     if(err) {
       return callback(err)
     } else {
-      return callback(null)
+      return callback(null, id)
     }
   })
 }
 
-module.exports User
+User.getUserList = function(callback) {
+  UserModule.find({}, function(err, users) {
+    if(err) {
+      return callback(err)
+    }
+    callback(null, users)
+  })
+}
+
+module.exports = User
