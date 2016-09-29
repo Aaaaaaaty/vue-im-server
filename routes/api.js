@@ -2,30 +2,29 @@ var express = require('express')
 var router = express.Router()
 var userHandler = require('../modules/userHandler.js')
 
-router.get('/login', function(req, res) {
-  // var user = req.body
-  // userHandler.login(user, function(obj) {
-  //   res.json(obj)
-  // })
-  res.send(req.body.username)
-  res.send('111')
-})
+//get方式
+// router.get('/login', function(req, res) {
+//   var user = req.query
+//   userHandler.login(user, function(obj) {
+//     res.json(obj)
+//   })
+// })
 
 router.post('/login', function(req, res) {
   var user = req.body
-  // userHandler.login(user, function(obj) {
-  //   res.json(obj)
-  // })
-  res.json(user)
-  res.send('111')
+  userHandler.login(user, function(obj) {
+    res.json(obj)
+  })
 })
 
  
-// var user = {
-//   username: 'abc',
-//   password: '123',
-//   _id: '57ea68d4e791d93bda5955c2'
-// }
+var user = {
+  username: 'admin',
+  password: 'admin'
+}
+userHandler.addUser(user, function(obj) {
+  console.log(obj)
+})
 // userHandler.deleteUser(user, function(obj) {
 //   // res.json(obj)
 //   console.log(obj)

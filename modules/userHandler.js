@@ -63,7 +63,7 @@ var userHandler = {
           },
           msg: '服务器出错'
         }) 
-      } else if(user.username === u.username) {
+      } else if(u) {
         return callback({
           status: 'ERROR',
           meta: 'user',
@@ -72,30 +72,32 @@ var userHandler = {
           },
           msg: '该用户名已存在'
         }) 
+      } else {
+        var userModel = new User(user)
+        userModel.save(function(err, u) {
+          if(err) {
+            return callback({
+              status: 'ERROR',
+              meta: 'user',
+              data: {
+                user: null
+              },
+              msg: '服务器出错'
+            }) 
+          } else {
+            return callback({
+              status: 'OK',
+              meta: 'user',
+              data: {
+                user: u
+              },
+              msg: '新建用户成功'
+            }) 
+          }
+        })
       }
 
-      var userModel = new User(user)
-      userModel.save(function(err, u) {
-        if(err) {
-          return callback({
-            status: 'ERROR',
-            meta: 'user',
-            data: {
-              user: null
-            },
-            msg: '服务器出错'
-          }) 
-        } else {
-          return callback({
-            status: 'OK',
-            meta: 'user',
-            data: {
-              user: u
-            },
-            msg: '新建用户成功'
-          }) 
-        }
-      })
+      
 
     })
   },
