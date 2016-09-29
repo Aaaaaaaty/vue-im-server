@@ -2,16 +2,24 @@ var express = require('express')
 var router = express.Router()
 var userHandler = require('../modules/userHandler.js')
 
-router.get('/login', function(req,res) {
+router.get('/login', function(req, res) {
   // var user = req.body
   // userHandler.login(user, function(obj) {
   //   res.json(obj)
   // })
-  console.log(req.body)
+  res.send(req.body.username)
+  res.send('111')
 })
 
+router.post('/login', function(req, res) {
+  var user = req.body
+  // userHandler.login(user, function(obj) {
+  //   res.json(obj)
+  // })
+  res.json(user)
+  res.send('111')
+})
 
-console.log(111)
  
 // var user = {
 //   username: 'abc',
