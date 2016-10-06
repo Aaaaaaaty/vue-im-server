@@ -1,7 +1,8 @@
 var mongoose = require('./db.js')
 var UserSchema = mongoose.Schema({
     username: String,
-    password: String
+    password: String,
+    friendslist: Array
 })
 
 var UserModule = mongoose.model('User', UserSchema)
@@ -9,12 +10,14 @@ var UserModule = mongoose.model('User', UserSchema)
 function User(user) {
     this.username = user.username
     this.password = user.password
+    this.friendslist = user.friendslist
 }
 
 User.prototype.save = function(callback) {
   var user = {
     username: this.username,
-    password: this.password
+    password: this.password,
+    friendslist: this.friendslist
   }
   var newUser = new UserModule(user)
   newUser.save(function (err, user) {
@@ -34,6 +37,15 @@ User.get = function(username, callback) {
     }
   })
 }
+User.getUser = function(id, callback) {
+  UserModule.findOne({_id: id}, function(err, user) {
+    if(err) {
+      return callback(err)
+    } else {
+      return callback(null, user)
+    }
+  })
+}
 
 User.delete = function(user, callback) {
   var id = user._id
@@ -43,6 +55,23 @@ User.delete = function(user, callback) {
     } else {
       return callback(null, id)
     }
+  })
+}
+
+User.update = function(user, callback) {
+  var id = user._id
+  var obj = {}
+  for(var prop in user) {
+    if(prop !== '_id') {
+      obj[prop] = user[prop]
+    }
+  }
+  UserModule.findByIdAndUpdate(id, { $set: obj}, function (err, u) {
+    if (err) {
+      return callback(err)
+    }
+
+    return callback(null, u)
   })
 }
 

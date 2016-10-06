@@ -101,11 +101,32 @@ var userHandler = {
 
     })
   },
-  updateUser: function() {},
+  updateUser: function(user, callback) {
+    User.update(user, function(err, u) {
+      console.log(user)
+      if(err) {
+        return callback({
+          status: 'ERROR',
+          meta: 'user',
+          data: {
+              user: null
+          },
+          message: '服务器出错'
+        })
+      }
+      return callback({
+        status: 'OK',
+        meta: 'user',
+        data: {
+            user: u
+        },
+        message: '更新用户成功'
+      })
+    })
+  },
   deleteUser: function(user, callback) {
     User.delete(user, function(err, u) {
       if(err) {
-        console.log(err)
         return callback({
           status: 'ERROR',
             meta: 'user',
@@ -125,6 +146,30 @@ var userHandler = {
         })
       }
     }) 
+  },
+  getUser: function(id, callback) {
+    User.getUser(id, function(err, u) {
+      if(err) {
+        console.log(err)
+        return callback({
+          status: 'ERROR',
+            meta: 'user',
+            data: {
+              user: u
+            },
+            msg: '服务器出错'
+        })
+      } else {
+        return callback({
+          status: 'OK',
+            meta: 'user',
+            data: {
+              user: u
+            },
+            msg: '获得用户信息'
+        })
+      }
+    })
   },
   getUserList: function(callback) {
     User.getUserList(function(err, u) {

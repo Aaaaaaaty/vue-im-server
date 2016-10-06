@@ -17,14 +17,33 @@ router.post('/login', function(req, res) {
   })
 })
 
- 
-var user = {
-  username: 'admin',
-  password: 'admin'
-}
-userHandler.addUser(user, function(obj) {
-  console.log(obj)
+router.post('/updateUser', function(req, res) {
+  var user = req.body
+  userHandler.updateUser(user, function(obj) {
+    res.json(obj)
+  })
 })
+
+router.post('/getUserList', function(req, res) {
+  userHandler.getUserList(function(obj) {
+    res.json(obj)
+  })
+})
+
+router.post('/getUser', function(req, res) {
+  var _id = req.body.id
+  userHandler.getUser(_id, function(obj) {
+    res.json(obj)
+  })
+})
+ 
+// var user = {
+//   username: 'admin',
+//   password: 'admin'
+// }
+// userHandler.addUser(user, function(obj) {
+//   console.log(obj)
+// })
 // userHandler.deleteUser(user, function(obj) {
 //   // res.json(obj)
 //   console.log(obj)
