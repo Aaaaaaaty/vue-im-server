@@ -20,7 +20,22 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
+var io = require('socket.io')(server)
 
+var onlineUsers = {} //在线用户
+var onlineCount = 0  //在线用户人数
+
+io.on('connection', function(socket){
+  
+  socket.emit('open')
+  console.log(22)
+  socket.on('message', function(obj) {
+    console.log(11)
+    console.log(obj)
+  })
+
+
+})
 /**
  * Listen on provided port, on all network interfaces.
  */
