@@ -103,7 +103,6 @@ var userHandler = {
   },
   updateUser: function(user, callback) {
     User.update(user, function(err, u) {
-      console.log(user)
       if(err) {
         return callback({
           status: 'ERROR',
@@ -147,10 +146,9 @@ var userHandler = {
       }
     }) 
   },
-  getUser: function(id, callback) {
-    User.getUser(id, function(err, u) {
+  getUser: function(username, callback) {
+    User.get(username, function(err, u) {
       if(err) {
-        console.log(err)
         return callback({
           status: 'ERROR',
             meta: 'user',

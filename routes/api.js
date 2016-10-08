@@ -31,8 +31,8 @@ router.post('/getUserList', function(req, res) {
 })
 
 router.post('/getUser', function(req, res) {
-  var _id = req.body.id
-  userHandler.getUser(_id, function(obj) {
+  var username = req.body.username
+  userHandler.getUser(username, function(obj) {
     res.json(obj)
   })
 })

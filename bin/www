@@ -22,16 +22,21 @@ app.set('port', port);
 var server = http.createServer(app);
 var io = require('socket.io')(server)
 
-var onlineUsers = {} //在线用户
-var onlineCount = 0  //在线用户人数
-
 io.on('connection', function(socket){
-  
+  var socketUser = {}
   socket.emit('open')
-  console.log(22)
-  socket.on('message', function(obj) {
-    console.log(11)
-    console.log(obj)
+  socket.on('addUser', function(toUser, fromUser) {
+    socketUser[toUser] = socket
+    socketUser[fromUser] = socket
+  })
+  socket.on('sendMsg', function(obj) {
+    var toUser = obj.toUser
+    var fromUser = obj.fromUser
+    var msg = obj.msg
+    if(toUser in socketUser) {
+      socketUser[toUser].emit('to' + toUser, msg)
+      socketUser[fromUser].emit('to' + fromUser, msg)
+    }
   })
 
 
