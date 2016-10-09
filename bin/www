@@ -23,27 +23,36 @@ var server = http.createServer(app);
 var io = require('socket.io')(server)
 var onlineUsers = {} //在线用户
 var onlineCount = 0  //在线用户人数
+var lock = {}
+var user = ''
 io.on('connection', function(socket){
   socket.emit('open')
   socket.on('addUser', function(username) {
     if(!onlineUsers.hasOwnProperty(username)) {
         onlineUsers[username] = socket
         //在线人数+1
-        onlineCount++
+        onlineCount = onlineCount + 1
+    }
+    user = username
+    console.log('在线人数：',onlineCount)
+    if(!lock[user]) {
+      socket.on('sendMsg', function(obj) {
+        var toUser = obj.toUser
+        var fromUser = obj.fromUser
+        var msg = obj.msg
+        //在线发送消息，在界面中和不在界面中还有两种情况后期优化，现讨论在界面情况
+        //fromUser稍后改回
+        if(fromUser in onlineUsers) {
+          // onlineUsers[toUser].emit('to' + toUser, obj)
+          onlineUsers[fromUser].emit('to' + fromUser, obj)
+        }
+        //离线保存到数据库中，上线后再提取
+      })
+      lock[user] = true
     }
   })
-  socket.on('sendMsg', function(obj) {
-    var toUser = obj.toUser
-    var fromUser = obj.fromUser
-    var msg = obj.msg
-    //在线发送消息，在界面中和不在界面中还有两种情况后期优化，现讨论在界面情况
-    //fromUser稍后改回
-    if(fromUser in onlineUsers) {
-      onlineUsers[toUser].emit('to' + toUser, obj)
-      onlineUsers[fromUser].emit('to' + fromUser, obj)
-    }
-    //离线保存到数据库中，上线后再提取
-  })
+  
+  
 })
 /**
  * Listen on provided port, on all network interfaces.
