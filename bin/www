@@ -42,10 +42,9 @@ io.on('connection', function(socket){
         fromUser = obj.fromUser
         msg = obj.msg
         //fromUser稍后改回
-        if(fromUser in onlineUsers) {
-          // onlineUsers[toUser].emit('to' + toUser, obj)
+        if(toUser in onlineUsers) {
+          onlineUsers[toUser].emit('to' + toUser, obj)
           console.log(obj)
-          console.log(onlineUsers[fromUser].id) 
           onlineUsers[fromUser].emit('to' + fromUser, obj)
         }
       })
