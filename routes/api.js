@@ -37,6 +37,12 @@ router.post('/getUser', function(req, res) {
   })
 })
  
+router.post('/addUser', function(req, res) {
+  var user = req.body
+  userHandler.addUser(user, function(obj) {
+    res.json(obj)
+  })
+})
 // var user = {
 //   username: 'admin',
 //   password: 'admin'
