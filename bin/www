@@ -36,6 +36,7 @@ io.on('connection', function(socket){
         onlineCount = onlineCount + 1
     }
     user = username
+    console.log(onlineUsers[username].id) //建立连接后 用户点击不同通讯录都是建立同样的socket对象
     console.log('在线人数：',onlineCount)
       socket.on('sendMsg', function(obj) {
         toUser = obj.toUser
@@ -45,6 +46,9 @@ io.on('connection', function(socket){
         if(toUser in onlineUsers) {
           onlineUsers[toUser].emit('to' + toUser, obj)
           console.log(obj)
+          onlineUsers[fromUser].emit('to' + fromUser, obj)
+        } else {
+          console.log('对面不在线')
           onlineUsers[fromUser].emit('to' + fromUser, obj)
         }
       })
