@@ -42,13 +42,15 @@ io.on('connection', function(socket){
         toUser = obj.toUser
         fromUser = obj.fromUser
         msg = obj.msg
+        time = obj.time
         //fromUser稍后改回
+        var i = 0 
         if(toUser in onlineUsers) {
           onlineUsers[toUser].emit('to' + toUser, obj)
-          console.log(obj)
           onlineUsers[fromUser].emit('to' + fromUser, obj)
         } else {
-          console.log('对面不在线')
+          console.log(toUser + '不在线')
+          console.log('socket.id', socket.id)
           onlineUsers[fromUser].emit('to' + fromUser, obj)
         }
       })

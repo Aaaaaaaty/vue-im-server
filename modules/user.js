@@ -2,7 +2,8 @@ var mongoose = require('./db.js')
 var UserSchema = mongoose.Schema({
     username: String,
     password: String,
-    friendslist: Array
+    friendslist: Array,
+    url: String
 })
 
 var UserModule = mongoose.model('User', UserSchema)
@@ -11,13 +12,15 @@ function User(user) {
     this.username = user.username
     this.password = user.password
     this.friendslist = user.friendslist
+    this.url = user.url
 }
 
 User.prototype.save = function(callback) {
   var user = {
     username: this.username,
     password: this.password,
-    friendslist: this.friendslist
+    friendslist: this.friendslist,
+    url: this.url
   }
   var newUser = new UserModule(user)
   newUser.save(function (err, user) {
@@ -34,6 +37,22 @@ User.get = function(username, callback) {
       return callback(err)
     } else {
       return callback(null, user)
+    }
+  })
+}
+User.getUserList = function(username, callback) {
+  UserModule.findOne({username: username}, function(err, user) {
+    if(err) {
+      return callback(err)
+    } else {
+      var userList = []
+      user.friendslist.map((item, index) => {
+        userList.push({
+          username: item,
+          type: 'person'
+        })
+      })
+      return callback(null, userList)
     }
   })
 }
@@ -75,13 +94,13 @@ User.update = function(user, callback) {
   })
 }
 
-User.getUserList = function(callback) {
-  UserModule.find({}, function(err, users) {
-    if(err) {
-      return callback(err)
-    }
-    callback(null, users)
-  })
-}
+// User.getUserList = function(callback) {
+//   UserModule.find({}, function(err, users) {
+//     if(err) {
+//       return callback(err)
+//     }
+//     callback(null, users)
+//   })
+// }
 
 module.exports = User
