@@ -43,6 +43,15 @@ router.post('/addUser', function(req, res) {
     res.json(obj)
   })
 })
+
+//查询download_url
+router.post('/getUserInfo', function(req, res) {
+  var username = req.body.username
+  console.log('api',req.body)
+  userHandler.getUserInfo(username, function(obj) {
+    res.json(obj)
+  })
+})
 // var user = {
 //   username: 'admin',
 //   password: 'admin'

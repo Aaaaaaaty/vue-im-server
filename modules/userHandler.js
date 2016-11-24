@@ -191,6 +191,29 @@ var userHandler = {
         })
       }
     })
+  },
+  getUserInfo: function(username, callback) {
+    User.get(username, function(err, u) {
+      if(err) {
+        return callback({
+          status: 'ERROR',
+            meta: 'user',
+            data: {
+              user: null
+            },
+            msg: '服务器出错'
+        })
+      } else {
+        return callback({
+          status: 'OK',
+          meta: 'user',
+          data: {
+            user: u
+          },
+          msg: '得到用户信息'
+        })
+      }
+    })
   }
 }
 
