@@ -47,10 +47,12 @@ User.getUserList = function(username, callback) {
     } else {
       var userList = []
       user.friendslist.map((item, index) => {
-        userList.push({
-          username: item,
-          type: 'person'
-        })
+        var userdata = {
+          username: item.username,
+          type: 'person',
+          url: item.url
+        }
+        userList.push(userdata)
       })
       return callback(null, userList)
     }

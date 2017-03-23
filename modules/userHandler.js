@@ -169,8 +169,8 @@ var userHandler = {
       }
     })
   },
-  getUserList: function(callback) {
-    User.getUserList(function(err, u) {
+  getUserList: function(username, callback) {
+    User.getUserList(username, function(err, u) {
       if(err) {
         return callback({
           status: 'ERROR',

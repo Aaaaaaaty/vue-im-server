@@ -25,7 +25,8 @@ router.post('/updateUser', function(req, res) {
 })
 
 router.post('/getUserList', function(req, res) {
-  userHandler.getUserList(function(obj) {
+  var username = req.body.username
+  userHandler.getUserList(username, function(obj) {
     res.json(obj)
   })
 })

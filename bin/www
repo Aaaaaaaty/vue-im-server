@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * Module dependencies.
+ * Module dependencies.s  
  */
 
 var app = require('../app')
