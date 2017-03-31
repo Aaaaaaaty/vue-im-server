@@ -50,7 +50,7 @@ io.on('connection', function(socket){
           onlineUsers[fromUser].emit('to' + fromUser, obj)
         } else {
           console.log(toUser + '不在线')
-          console.log('socket.id', socket.id)
+          // console.log('socket.id', socket.id)
           onlineUsers[fromUser].emit('to' + fromUser, obj)
         }
       })
