@@ -43,9 +43,22 @@ io.on('connection', function(socket){
         fromUser = obj.fromUser
         msg = obj.msg
         time = obj.time
-        //fromUser稍后改回
-        var i = 0 
-        if(toUser in onlineUsers) {
+        if (toUser == '群聊') {
+          for (user in onlineUsers) {
+            obj.fromUser = '群聊'
+            obj.toUser = user
+            obj.trueFrom = fromUser
+            if( user != fromUser ) { //接收方
+              onlineUsers[user].emit('to' + user, obj)
+            } else { //发送方
+              obj.toUser = '群聊'
+              obj.fromUser = user
+              onlineUsers[fromUser].emit('to' + fromUser, obj)
+            }
+          }
+        } 
+        else if(toUser in onlineUsers) {
+          console.log(1)
           onlineUsers[toUser].emit('to' + toUser, obj)
           onlineUsers[fromUser].emit('to' + fromUser, obj)
         } else {
@@ -53,6 +66,8 @@ io.on('connection', function(socket){
           // console.log('socket.id', socket.id)
           onlineUsers[fromUser].emit('to' + fromUser, obj)
         }
+        
+        
       })
     socket.on("disconnect", function () {
       console.log("客户端断开连接.")
