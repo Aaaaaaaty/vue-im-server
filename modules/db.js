@@ -4,7 +4,6 @@ var settings = require('../setting.js')
 var db
 
 db = settings.host + '/' + settings.db
-
 mongoose.connect(db)
 
 mongoose.connection.on('close', function(){
